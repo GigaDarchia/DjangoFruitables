@@ -2,6 +2,7 @@
 
 ## Authorization
 
+- Email: `test@admin.com`
 - Username: `Giga`
 - Password: `pass123!`
 
