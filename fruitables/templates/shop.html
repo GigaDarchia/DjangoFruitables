@@ -5,11 +5,16 @@
 {% block content %}
     <!-- Single Page Header start -->
     <div class="container-fluid page-header py-5">
-        <h1 class="text-center text-white display-6">Shop</h1>
+        <h1 class="text-center text-white display-6">მაღაზია</h1>
         <ol class="breadcrumb justify-content-center mb-0">
-            <li class="breadcrumb-item"><a href="#">Home</a></li>
-            <li class="breadcrumb-item"><a href="#">Pages</a></li>
-            <li class="breadcrumb-item active text-white">Shop</li>
+            {% if category %}
+                <li class="breadcrumb-item"><a href="{% url 'home' %}">მთავარი</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'shop' %}">მაღაზია</a></li>
+                <li class="breadcrumb-item active text-white">{{ category.name }}</li>
+            {% else %}
+                <li class="breadcrumb-item"><a href="{% url 'home' %}">მთავარი</a></li>
+                <li class="breadcrumb-item active text-white">მაღაზია</li>
+            {% endif %}
         </ol>
     </div>
     <!-- Single Page Header End -->
@@ -56,7 +61,7 @@
                                     <div class="mb-3">
                                         <h4>კატეგორიები</h4>
                                         {% for category in categories %}
-                                            <ul class="list-unstyled fruite-categorie">
+                                            <ul class="list-unstyled fruite-categorie" style="margin-bottom: 0px">
                                                 <li>
                                                     <div class="d-flex justify-content-between fruite-name">
                                                         <a href="{% url 'category_page' slug=category.slug %}"><i
@@ -68,32 +73,32 @@
                                         {% endfor %}
                                     </div>
                                 </div>
-                                <div class="col-lg-12">
-                                    <div class="mb-3">
-                                        <h4 class="mb-2">ფასი</h4>
-                                        <input type="range" class="form-range w-100" id="rangeInput" name="price"
-                                               min="0" max="20" value="0" oninput="amount.value=rangeInput.value">
-                                        <output id="amount" name="amount" min-value="0" max-value="20"
-                                                for="rangeInput">0
-                                        </output>
+                                <form method="GET" action="{% url 'filter_products' %}">
+                                    <div class="col-lg-12">
+                                        <div class="mb-3">
+                                            <h4 class="mb-2">ფასი</h4>
+                                            <input type="range" class="form-range w-100" id="rangeInput" name="price"
+                                                   min="0" max="20" value="0" oninput="amount.value=rangeInput.value">
+                                            <output id="amount" name="amount" min-value="0" max-value="20"
+                                                    for="rangeInput">0
+                                            </output>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-lg-12">
-                                    <div class="mb-3">
-                                        <form method="get" action="">
-                                        <h4>ქვეკატეგორიები</h4>
-                                        {% for category in subcategories %}
-                                            <div class="mb-2">
-                                                <input type="radio" class="me-2" id="Categories-{{ category.id }}"
-                                                       name="Subcategory"
-                                                       value="{{ category.name }}">
-                                                <label for="Categories-{{ category.id }}"> {{ category.name }} </label>
-                                            </div>
-                                        {% endfor %}
-                                        <button type="submit" id="filter">გაფილტრვა</button>
-                                        </form>
+                                    <div class="col-lg-12">
+                                        <div class="mb-3">
+                                            <h4>ქვეკატეგორიები</h4>
+                                            {% for category in subcategories %}
+                                                <div class="mb-2">
+                                                    <input type="radio" class="me-2"
+                                                           name="subcategory"
+                                                           value="{{ category.name }}">
+                                                    <label for="Categories-{{ category.id }}"> {{ category.name }} </label>
+                                                </div>
+                                            {% endfor %}
+                                            <button type="submit" id="filter">გაფილტრვა</button>
+                                        </div>
                                     </div>
-                                </div>
+                                </form>
                             </div>
                         </div>
                         <div class="col-lg-9">
@@ -119,7 +124,7 @@
                                                 <p>{{ product.short_desc }}</p>
                                                 <div class="d-flex justify-content-between flex-lg-wrap">
                                                     <p class="text-dark fs-5 fw-bold mb-0">₾{{ product.price }} / kg</p>
-                                                    <a href="#"
+                                                    <a href="{% url 'add_to_cart' product_id=product.id %}"
                                                        class="btn border border-secondary rounded-pill px-3 text-primary"><i
                                                             class="fa fa-shopping-bag me-2 text-primary"></i> კალათაში
                                                         დამატება</a>
@@ -130,7 +135,7 @@
                                 {% endfor %}
                                 <div class="col-12">
                                     <div class="pagination d-flex justify-content-center mt-5">
-                                        {% for num in products.paginator.page_range %}
+                                        {% for num in paginator.page_range %}
                                             <a href="?page={{ num }}" class="rounded">{{ num }}</a>
                                         {% endfor %}
                                     </div>

@@ -1,7 +1,6 @@
 from django.contrib import admin
 from mptt.admin import MPTTModelAdmin
-from .models import Product, Category, UserCart
-
+from .models import Product, Category
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
@@ -23,7 +22,3 @@ class ProductAdmin(admin.ModelAdmin):
 class CategoryAdmin(MPTTModelAdmin):
     empty_value_display = '-empty-'
     list_display = ('name', 'slug', 'parent')
-
-@admin.register(UserCart)
-class UserCartAdmin(admin.ModelAdmin):
-    filter_horizontal = ('products',)

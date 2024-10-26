@@ -1,5 +1,4 @@
 from django.db import models
-from django.conf import settings
 from versatileimagefield.fields import VersatileImageField
 from mptt.models import MPTTModel, TreeForeignKey
 
@@ -27,10 +26,3 @@ class Category(MPTTModel):
 
     def __str__(self):
         return self.name
-
-class UserCart(models.Model):
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, default=None)
-    products = models.ManyToManyField(Product, blank=True)
-
-    def __str__(self):
-        return f'{self.user.username}\'s Cart'

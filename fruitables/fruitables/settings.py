@@ -40,8 +40,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'debug_toolbar',
     'versatileimagefield',
-    'shop.apps.ShopConfig',
-    'user.apps.UserConfig',
+    'shop',
+    'user',
+    'order',
     'mptt',
 ]
 
@@ -70,6 +71,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'shop.context_processors.category_processor',
+                'order.context_processors.cart_item_count',
             ],
         },
     },
