@@ -10,6 +10,9 @@ class CartPage(TemplateView):
     """Simple view for displaying the user's shopping cart"""
     template_name = 'cart.html'
 
+class CheckoutView(TemplateView):
+    """Simple view for rendering the checkout page"""
+    template_name = 'checkout.html'
 
 @login_required  # Ensures only logged-in users can add to cart
 def add_to_cart(request, product_id):

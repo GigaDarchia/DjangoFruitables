@@ -114,12 +114,6 @@ class ProductFilterView(ListView):
         context['selected_subcategory'] = self.request.GET.get('subcategory', '')
         return context
 
-
-class CheckoutView(TemplateView):
-    """Simple view for rendering the checkout page"""
-    template_name = 'checkout.html'
-
-
 class ContactView(TemplateView):
     """Simple view for rendering the contact page"""
     template_name = 'contact.html'
