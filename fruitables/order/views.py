@@ -1,6 +1,5 @@
 from django.shortcuts import redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from django.urls import reverse
 from shop.models import Product
 from .models import Cart, CartItem
 from django.views.generic import TemplateView
