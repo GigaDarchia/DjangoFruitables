@@ -80,18 +80,25 @@
                                             <input type="range" class="form-range w-100" id="rangeInput" name="price"
                                                    min="0" max="20" value="0" oninput="amount.value=rangeInput.value">
                                             <output id="amount" name="amount" min-value="0" max-value="20"
-                                                    for="rangeInput">0
+                                                    for="rangeInput">{{ selected_price }}
                                             </output>
                                         </div>
                                     </div>
                                     <div class="col-lg-12">
                                         <div class="mb-3">
                                             <h4>ქვეკატეგორიები</h4>
+                                            <div class="mb-2">
+                                                <input type="radio" class="me-2"
+                                                       name="subcategory"
+                                                       value="ყველა">
+                                                <label> ყველა </label>
+                                            </div>
                                             {% for category in subcategories %}
                                                 <div class="mb-2">
                                                     <input type="radio" class="me-2"
                                                            name="subcategory"
-                                                           value="{{ category.name }}">
+                                                           value="{{ category.name }}"
+                                                           {% if category.name == selected_subcategory %}checked{% endif %}>
                                                     <label for="Categories-{{ category.id }}"> {{ category.name }} </label>
                                                 </div>
                                             {% endfor %}
@@ -102,6 +109,9 @@
                             </div>
                         </div>
                         <div class="col-lg-9">
+                            {% if messages %}
+                                <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
+                            {% endif %}
                             <div class="row g-4 justify-content-center">
                                 {% for product in products %}
                                     <div class="col-md-6 col-lg-6 col-xl-4">
@@ -123,7 +133,7 @@
                                                 <h4>{{ product.title }}</h4>
                                                 <p>{{ product.short_desc }}</p>
                                                 <div class="d-flex justify-content-between flex-lg-wrap">
-                                                    <p class="text-dark fs-5 fw-bold mb-0">₾{{ product.price }} / kg</p>
+                                                    <p class="text-dark fs-5 fw-bold mb-0">₾{{ product.price }} / კგ</p>
                                                     <a href="{% url 'add_to_cart' product_id=product.id %}"
                                                        class="btn border border-secondary rounded-pill px-3 text-primary"><i
                                                             class="fa fa-shopping-bag me-2 text-primary"></i> კალათაში
@@ -141,11 +151,11 @@
                                     </div>
                                 </div>
                             </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <!-- Fruits Shop End-->
+        <!-- Fruits Shop End-->
 {% endblock %}

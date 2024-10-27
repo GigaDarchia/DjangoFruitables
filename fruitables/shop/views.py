@@ -1,84 +1,125 @@
-from django.shortcuts import render
 from .models import Category, Product
-from django.core.paginator import Paginator
 from .forms import SearchForm
-from django.views.generic import ListView, DetailView, TemplateView
+from django.views.generic import ListView, TemplateView
 
-
-def paginator_helper(request, queryset):
-    paginator = Paginator(queryset, 9)
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
-    return page_obj
-
-def home(request):
-    return render(request, 'index.html')
 
 class HomeView(TemplateView):
+    """Simple view for rendering the home page"""
     template_name = 'index.html'
 
+
 class ProductPageView(TemplateView):
+    """Individual product detail page view"""
     template_name = 'shop-detail.html'
 
+
 class CategoryPageView(ListView):
+    """
+    Display products filtered by category, including all subcategories
+    Uses MPTT (Modified Preorder Tree Traversal) for handling nested categories
+    """
     template_name = 'shop.html'
     context_object_name = 'products'
     paginate_by = 9
 
-    def get_queryset(self):
-        category = Category.objects.get(slug=self.kwargs['slug'])
-        categories = category.get_descendants(include_self=True)
+    def __init__(self):
+        super().__init__()
+        self.category = None
 
+    def get_queryset(self):
+        # Get category by slug and include all its descendants
+        self.category = Category.objects.get(slug=self.kwargs['slug'])
+        categories = self.category.get_descendants(include_self=True)
+        # Filter products by categories and optimize with select_related
         return Product.objects.filter(category__in=categories).select_related('category').order_by('title')
 
-    def get_context_data(self, *, object_list=None, **kwargs):
+    def get_context_data(self, **kwargs):
+        # Add current category to context for template use
         context = super().get_context_data(**kwargs)
-        context['category'] = Category.objects.get(slug=self.kwargs['slug'])
+        context['category'] = self.category
         return context
 
+
 class ProductsView(ListView):
+    """Display all products with pagination"""
     model = Product
     template_name = 'shop.html'
     context_object_name = 'products'
     paginate_by = 9
 
     def get_queryset(self):
-        return Product.objects.select_related('category').all()
+        # Optimize query with select_related for category
+        return Product.objects.select_related('category').all().order_by('title')
 
 
-def search(request):
-    form = SearchForm(request.GET)
-    if form.is_valid():
-        query = form.cleaned_data['query']
-        products = Product.objects.filter(title__icontains=query)
-        page_obj = paginator_helper(request, products)
+class SearchView(ListView):
+    """
+    Handle product search functionality
+    Uses a form to get search query and filters products accordingly
+    """
+    model = Product
+    template_name = 'shop.html'
+    context_object_name = 'products'
+    paginate_by = 9
+    form_class = SearchForm
 
-        return render(request, 'shop.html', context={'products': page_obj, 'form': form})
-    else:
-        return render(request, 'shop.html', context={'form': SearchForm()})
+    def get_queryset(self):
+        products = Product.objects.select_related('category').all()
 
-def filter_products(request):
-    price = request.GET.get('price')
-    subcategory = request.GET.get('subcategory')
+        # Filter products if search form is valid
+        form = self.form_class(self.request.GET)
+        if form.is_valid():
+            query = form.cleaned_data['query']
+            products = products.filter(title__icontains=query)
 
-    product_list = Product.objects.select_related('category').all()
+        return products
 
-    if subcategory:
-        product_list = product_list.filter(category__name=subcategory).select_related('category').all()
-    if price:
-        product_list = product_list.filter(price__lte=price).select_related('category').all()
-
-    page_obj = paginator_helper(request, product_list)
-
-    return render(request, 'shop.html', context={'products': page_obj})
-
-
-def checkout(request):
-    return render(request, 'checkout.html')
+    def get_context_data(self, **kwargs):
+        # Add search form to context, preserving user input if valid
+        context = super().get_context_data(**kwargs)
+        form = self.form_class(self.request.GET)
+        context['form'] = form if form.is_valid() else self.form_class()
+        return context
 
 
-def contact(request):
-    return render(request, 'contact.html')
+class ProductFilterView(ListView):
+    """
+    Filter products by price and subcategory
+    Maintains filter state in template after submission
+    """
+    model = Product
+    template_name = 'shop.html'
+    context_object_name = 'products'
+    paginate_by = 9
 
-def test(request):
-    pass
+    def get_queryset(self):
+        # Get filter parameters from GET request
+        price = self.request.GET.get('price')
+        subcategory = self.request.GET.get('subcategory')
+
+        products = Product.objects.select_related('category').all()
+
+        # Apply filters if parameters exist
+        if subcategory and subcategory != 'ყველა':
+            products = products.filter(category__name=subcategory)
+        if price:
+            products = products.filter(price__lte=price)
+
+        return products
+
+    def get_context_data(self, **kwargs):
+        # Add selected filter values to context to maintain state
+        context = super().get_context_data(**kwargs)
+        context['selected_price'] = self.request.GET.get('price', 0)
+        context['selected_subcategory'] = self.request.GET.get('subcategory', '')
+        return context
+
+
+class CheckoutView(TemplateView):
+    """Simple view for rendering the checkout page"""
+    template_name = 'checkout.html'
+
+
+class ContactView(TemplateView):
+    """Simple view for rendering the contact page"""
+    template_name = 'contact.html'
