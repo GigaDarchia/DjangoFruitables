@@ -78,7 +78,7 @@
                                         <div class="mb-3">
                                             <h4 class="mb-2">ფასი</h4>
                                             <input type="range" class="form-range w-100" id="rangeInput" name="price"
-                                                   min="0" max="20" value="0" oninput="amount.value=rangeInput.value">
+                                                   min="0" max="20" value="{{ selected_price }}" oninput="amount.value=rangeInput.value">
                                             <output id="amount" name="amount" min-value="0" max-value="20"
                                                     for="rangeInput">{{ selected_price }}
                                             </output>

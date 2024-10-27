@@ -49,7 +49,7 @@ class ProductsView(ListView):
 
     def get_queryset(self):
         # Optimize query with select_related for category
-        return Product.objects.select_related('category').all().order_by('title')
+        return Product.objects.select_related('category').order_by('title')
 
 
 class SearchView(ListView):
@@ -64,7 +64,7 @@ class SearchView(ListView):
     form_class = SearchForm
 
     def get_queryset(self):
-        products = Product.objects.select_related('category').all()
+        products = Product.objects.select_related('category')
 
         # Filter products if search form is valid
         form = self.form_class(self.request.GET)
@@ -97,7 +97,7 @@ class ProductFilterView(ListView):
         price = self.request.GET.get('price')
         subcategory = self.request.GET.get('subcategory')
 
-        products = Product.objects.select_related('category').all()
+        products = Product.objects.select_related('category')
 
         # Apply filters if parameters exist
         if subcategory and subcategory != 'ყველა':
