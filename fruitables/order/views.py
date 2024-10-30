@@ -1,40 +1,84 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect, get_object_or_404
-from django.contrib.auth.decorators import login_required
 from shop.models import Product
+from django.urls import reverse_lazy
 from .models import Cart, CartItem
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, ListView, DeleteView, UpdateView
+from django.views import View
 
-
-class CartPage(TemplateView):
-    """Simple view for displaying the user's shopping cart"""
-    template_name = 'cart.html'
 
 class CheckoutView(TemplateView):
-    """Simple view for rendering the checkout page"""
+    """View for rendering the checkout page."""
     template_name = 'checkout.html'
 
-@login_required  # Ensures only logged-in users can add to cart
-def add_to_cart(request, product_id):
-    # Get the product or return 404 if not found
-    product = get_object_or_404(Product, id=product_id)
 
-    # Check if product is in stock before proceeding
-    if product.stock <= 0:
-        # Redirect back to previous page
-        return redirect(request.META.get('HTTP_REFERER'))
+class AddToCartView(LoginRequiredMixin, View):
+    """Handles adding a product to the user's cart."""
 
-    # Get the user's cart
-    cart = Cart.objects.get(user=request.user)
-    # Get existing cart item or create new one if it doesn't exist
-    cart_item, created = CartItem.objects.get_or_create(cart=cart, product=product)
+    success_url = reverse_lazy('shop')  # Redirect URL after successfully adding to cart
 
-    # Increment the quantity of the cart item
-    cart_item.quantity += 1
-    cart_item.save()
+    def post(self, request, **kwargs):
+        # Get the product by ID or return 404 if not found
+        product_id = kwargs.get('product_id')
+        product = get_object_or_404(Product, id=product_id)
 
-    # Decrease the product stock
-    product.stock -= 1
-    product.save()
+        # Redirect if the product is out of stock
+        if product.stock == 0:
+            return redirect(request.META.get('HTTP_REFERER'))
 
-    # Return to the page user came from
-    return redirect(request.META.get('HTTP_REFERER'))
+        # Retrieve or create the user's cart and cart item
+        cart = Cart.objects.get(user=request.user)
+        cart_item, created = CartItem.objects.get_or_create(cart=cart, product=product)
+
+        # Increase item quantity in cart and save
+        cart_item.quantity += 1
+        cart_item.save()
+
+        # Decrease the stock of the product and save
+        product.stock -= 1
+        product.save()
+
+        # Redirect to the success URL (e.g., shop page)
+        return redirect(self.success_url)
+
+
+class CartView(LoginRequiredMixin, ListView):
+    """Displays the items in the user's cart."""
+
+    model = CartItem
+    template_name = 'cart.html'
+    context_object_name = 'items'  # Name used in template to access cart items
+
+    def get_queryset(self):
+        # Retrieve user's cart items, including related product data for optimization
+        cart = Cart.objects.get(user=self.request.user)
+        items = CartItem.objects.filter(cart=cart).select_related('product')
+        return items
+
+
+class RemoveFromCart(DeleteView):
+    """Handles removing an item from the user's cart."""
+
+    model = CartItem
+    context_object_name = 'item'  # Name used in template to access the item being removed
+    success_url = reverse_lazy('cart')  # Redirect URL after successful deletion
+
+    def get_object(self, queryset=None):
+        # Retrieve the CartItem based on user, cart, and product ID
+        product_id = self.kwargs.get('product_id')
+        product = Product.objects.get(id=product_id)
+        cart = Cart.objects.get(user=self.request.user)
+        item = CartItem.objects.get(cart=cart, product=product)
+        return item
+
+    def delete(self, request, *args, **kwargs):
+        # Handle the product stock update and delete the cart item
+        item = self.get_object()
+        product = item.product
+
+        # Restore the product stock based on cart item quantity
+        product.stock += item.quantity
+        product.save()
+
+        # Delete the cart item after stock update
+        item.delete()
