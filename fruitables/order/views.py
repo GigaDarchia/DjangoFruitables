@@ -3,7 +3,7 @@ from django.shortcuts import redirect, get_object_or_404
 from shop.models import Product
 from django.urls import reverse_lazy
 from .models import Cart, CartItem
-from django.views.generic import TemplateView, ListView, DeleteView, UpdateView
+from django.views.generic import TemplateView, ListView, DeleteView
 from django.views import View
 
 
@@ -16,6 +16,7 @@ class AddToCartView(LoginRequiredMixin, View):
     """Handles adding a product to the user's cart."""
 
     success_url = reverse_lazy('shop')  # Redirect URL after successfully adding to cart
+    login_url = reverse_lazy('login')
 
     def post(self, request, **kwargs):
         # Get the product by ID or return 404 if not found
@@ -48,6 +49,7 @@ class CartView(LoginRequiredMixin, ListView):
     model = CartItem
     template_name = 'cart.html'
     context_object_name = 'items'  # Name used in template to access cart items
+    login_url = 'login'
 
     def get_queryset(self):
         # Retrieve user's cart items, including related product data for optimization
@@ -66,7 +68,7 @@ class RemoveFromCart(DeleteView):
     def get_object(self, queryset=None):
         # Retrieve the CartItem based on user, cart, and product ID
         product_id = self.kwargs.get('product_id')
-        product = Product.objects.get(id=product_id)
+        product = get_object_or_404(Product, id=product_id)
         cart = Cart.objects.get(user=self.request.user)
         item = CartItem.objects.get(cart=cart, product=product)
         return item

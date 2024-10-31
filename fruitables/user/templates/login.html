@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container-fluid py-5">
+        <div class="container py-5">
+            <h1>Login</h1>
+            <form method="POST">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit">Login</button>
+                <p>If you don't have an account yet, <a href="{% url 'register' %}">Sign up here.</a></p>
+            </form>
+        </div>
+    </div>
+{% endblock %}

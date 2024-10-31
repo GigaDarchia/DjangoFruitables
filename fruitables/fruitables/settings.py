@@ -55,6 +55,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     "debug_toolbar.middleware.DebugToolbarMiddleware",
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'user.middlewares.UserActivityMiddleware',
 ]
 
 ROOT_URLCONF = 'fruitables.urls'
