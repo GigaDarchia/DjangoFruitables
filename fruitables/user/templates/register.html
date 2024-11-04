@@ -1,24 +1,36 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <div class="container-fluid py-5">
-        <div class="container py-5">
-            <h1>Registration Page</h1>
-            <form method="POST">
+    <div class="container-fluid py-5" style="margin-top: 150px">
+        <div class="container py-5" style="background-color: #e0e0e0; border-radius: 20px">
+            <h1 style="color: #81c408 !important;">რეგისტრაცია</h1>
+            <form method="POST" style="padding: 20px 15px">
                 {% csrf_token %}
-                {{ form.email.label }}
-                {{ form.email }}
-                
-                {{ form.username.label }}
-                {{ form.username }}
-                
-                {{ form.password1.label }}
-                {{ form.password1 }}
-                
-                {{ form.password2.label }}
-                {{ form.password2 }}
-                
-                <button type="submit">Register</button>
+                {% for error in form.errors.values %}
+                    <p style="color: red">{{ error }}</p>
+                {% endfor %}
+                <div class="form-group">
+                    <p>ელ-ფოსტა: </p>
+                    {{ form.email }}
+                </div>
+                <div class="form-group">
+                    <p>თქვენი იუზერი: </p>
+                    {{ form.username }}
+                </div>
+                <div class="form-group">
+                    <p>პაროლი: </p>
+                    <ul>
+                        <li><small>მინიმუმ 8 სიმბოლო</small></li>
+                        <li><small>არ უნდა ჰგავდეს იუზერს</small></li>
+                        <li><small>უნდა შეიცავდეს ციფრებს</small></li>
+                    </ul>
+                    {{ form.password1 }}
+                </div>
+                <div class="form-group">
+                    <p>გაიმეორეთ პაროლი: </p>
+                    {{ form.password2 }}
+                </div>
+                <button type="submit" id="filter" style="margin-top: 1rem; margin-bottom: 1rem">რეგისტრაცია</button>
             </form>
         </div>
     </div>

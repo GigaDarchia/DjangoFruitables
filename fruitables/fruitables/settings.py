@@ -26,9 +26,6 @@ SECRET_KEY = 'django-insecure-9mo&nd6k#2tf#%(7oc$7ih&fz7n0n52aq59*h1+sjdt4_86k^^
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -55,7 +52,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     "debug_toolbar.middleware.DebugToolbarMiddleware",
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'user.middlewares.UserActivityMiddleware',
+    'user.middleware.UserActivityMiddleware',
 ]
 
 ROOT_URLCONF = 'fruitables.urls'
@@ -110,6 +107,12 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# Custom Backend to Authorize Users via E-mail
+AUTHENTICATION_BACKENDS = [
+    'user.backends.EmailBackend',
+    'django.contrib.auth.backends.ModelBackend',
+]
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
@@ -128,10 +131,7 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
-STATICFILES_DIRS = [
-    BASE_DIR / "static",
-    BASE_DIR / 'shop' / 'static',
-]
+STATICFILES_DIRS = [BASE_DIR / "static"]
 
 INTERNAL_IPS = [
     '127.0.0.1',
@@ -145,3 +145,4 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'user.User'
+

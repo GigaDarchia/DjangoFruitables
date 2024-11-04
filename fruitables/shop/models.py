@@ -13,8 +13,12 @@ class Product(models.Model):
     description = models.TextField(blank=True, null=True)
     rating = models.PositiveIntegerField(default=0)
 
+    class Meta:
+        ordering = ['title']
+
     def __str__(self):
         return self.title
+
 
 class Category(MPTTModel):
     name = models.CharField(max_length=200)

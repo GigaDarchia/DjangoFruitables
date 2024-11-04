@@ -2,7 +2,6 @@ from .models import Category, Product
 from .forms import SearchForm
 from django.views.generic import ListView, TemplateView
 
-
 class HomeView(TemplateView):
     """Simple view for rendering the home page"""
     template_name = 'index.html'
@@ -31,7 +30,7 @@ class CategoryPageView(ListView):
         self.category = Category.objects.get(slug=self.kwargs['slug'])
         categories = self.category.get_descendants(include_self=True)
         # Filter products by categories and optimize with select_related
-        return Product.objects.filter(category__in=categories).select_related('category').order_by('title')
+        return Product.objects.filter(category__in=categories).select_related('category')
 
     def get_context_data(self, **kwargs):
         # Add current category to context for template use
@@ -49,7 +48,7 @@ class ProductsView(ListView):
 
     def get_queryset(self):
         # Optimize query with select_related for category
-        return Product.objects.select_related('category').order_by('title')
+        return Product.objects.select_related('category')
 
 
 class SearchView(ListView):
@@ -117,3 +116,9 @@ class ProductFilterView(ListView):
 class ContactView(TemplateView):
     """Simple view for rendering the contact page"""
     template_name = 'contact.html'
+
+class Error404(TemplateView):
+    template_name = '404.html'
+
+class Error500(TemplateView):
+    template_name = '500.html'

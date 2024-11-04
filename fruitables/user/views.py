@@ -1,40 +1,37 @@
-from django.contrib.auth import login, authenticate, logout
+from django.contrib.auth import logout, authenticate, login
 from django.contrib.auth.forms import AuthenticationForm
-from django.shortcuts import redirect, render
+from django.urls import reverse_lazy
+from django.views.generic import CreateView
+from django.views import View
+from django.contrib.auth.views import LoginView
 from .forms import RegisterForm
 
-def register(request):
-    if request.method == 'POST':
-        form = RegisterForm(request.POST)
-        if form.is_valid():
-            user = form.save()
-            login(request, user)
-            return redirect('home')
-    else:
-        form = RegisterForm()
+class RegisterView(CreateView):
+    template_name = 'register.html'
+    form_class = RegisterForm
+    success_url = reverse_lazy('home')
 
-    return render(request, 'register.html', context={'form': form})
 
-def logIn(request):
-    if request.method == 'POST':
-        form = AuthenticationForm(request, data=request.POST)
-        if form.is_valid():
-            username = form.cleaned_data.get('username')
-            password = form.cleaned_data.get('password')
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        user = self.object
 
-            user = authenticate(username=username, password=password)
+        authenticated_user = authenticate(
+            email=user.email,
+            password=form.cleaned_data['password1'],
+            backend='user.backends.EmailBackend'
+        )
 
-            if user is not None:
-                login(request, user)
-                return redirect('home')
-            else:
-                form.add_error(None, 'Invalid username or password')
-    else:
-        form = AuthenticationForm(request)
+        login(self.request, authenticated_user)
+        return response
 
-    return render(request, 'login.html', {'form': form})
+class LogInView(LoginView):
+    form_class = AuthenticationForm
+    template_name = 'login.html'
+    success_url = reverse_lazy('home')
 
-def logOut(request):
-    logout(request)
-    return redirect('login')
-
+    def get_success_url(self):
+        next_url = self.request.GET.get('next')
+        if next_url:
+            return next_url
+        return self.success_url

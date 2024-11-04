@@ -19,6 +19,8 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from debug_toolbar.toolbar import debug_toolbar_urls
+from shop.views import Error404, Error500
+
 
 
 urlpatterns = [
@@ -26,8 +28,10 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('cart/', include('order.urls')),
     path('account/', include('user.urls')),
-
 ] + debug_toolbar_urls()
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+handler404 = Error404.as_view()
+handler500 = Error500.as_view()
