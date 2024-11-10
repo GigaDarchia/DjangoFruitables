@@ -1,36 +1,37 @@
 {% extends 'base.html' %}
+{% load i18n %}
 
 {% block content %}
     <div class="container-fluid py-5" style="margin-top: 150px">
         <div class="container py-5" style="background-color: #e0e0e0; border-radius: 20px">
-            <h1 style="color: #81c408 !important;">რეგისტრაცია</h1>
+            <h1 style="color: #81c408 !important;">{% trans 'Register' %}</h1>
             <form method="POST" style="padding: 20px 15px">
                 {% csrf_token %}
                 {% for error in form.errors.values %}
                     <p style="color: red">{{ error }}</p>
                 {% endfor %}
                 <div class="form-group">
-                    <p>ელ-ფოსტა: </p>
+                    <p>{% trans 'E-mail' %}: </p>
                     {{ form.email }}
                 </div>
                 <div class="form-group">
-                    <p>თქვენი იუზერი: </p>
+                    <p>{% trans 'Username' %}: </p>
                     {{ form.username }}
                 </div>
                 <div class="form-group">
-                    <p>პაროლი: </p>
+                    <p>{% trans 'Password' %}: </p>
                     <ul>
-                        <li><small>მინიმუმ 8 სიმბოლო</small></li>
-                        <li><small>არ უნდა ჰგავდეს იუზერს</small></li>
-                        <li><small>უნდა შეიცავდეს ციფრებს</small></li>
+                        <li><small>{% trans 'Must contain minimum 8 symbols' %}</small></li>
+                        <li><small>{% trans 'Must not contain the username' %}</small></li>
+                        <li><small>{% trans 'Must include digits' %}</small></li>
                     </ul>
                     {{ form.password1 }}
                 </div>
                 <div class="form-group">
-                    <p>გაიმეორეთ პაროლი: </p>
+                    <p>{% trans 'Repeat Password' %}: </p>
                     {{ form.password2 }}
                 </div>
-                <button type="submit" id="filter" style="margin-top: 1rem; margin-bottom: 1rem">რეგისტრაცია</button>
+                <button type="submit" id="filter" style="margin-top: 1rem; margin-bottom: 1rem">{% translate 'Register' %}</button>
             </form>
         </div>
     </div>

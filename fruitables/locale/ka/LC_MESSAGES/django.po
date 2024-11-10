@@ -1,0 +1,216 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-11-10 20:28+0400\n"
+"PO-Revision-Date: 2024-11-10 20:29+0400\n"
+"Last-Translator: Giga Darchia <test@admin.com>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n!=1);\n"
+"X-Translated-Using: django-rosetta 0.10.1\n"
+
+#: .\fruitables\fruitables\settings.py:136
+msgid "English"
+msgstr "ინგლისური"
+
+#: .\fruitables\fruitables\settings.py:137
+msgid "Georgian"
+msgstr "ქართული"
+
+#: .\fruitables\order\models.py:7
+msgid "User"
+msgstr "მომხმარებელი"
+
+#: .\fruitables\order\models.py:13
+msgid "Cart"
+msgstr "კალათა"
+
+#: .\fruitables\order\models.py:14
+msgid "Product"
+msgstr "პროდუქტი"
+
+#: .\fruitables\order\models.py:15
+msgid "Quantity"
+msgstr "რაოდენობა"
+
+#: .\fruitables\shop\models.py:7
+msgid "Title"
+msgstr "სახელი"
+
+#: .\fruitables\shop\models.py:8
+msgid "Category"
+msgstr "კატეგორია"
+
+#: .\fruitables\shop\models.py:9 .\fruitables\shop\models.py:27
+msgid "Slug"
+msgstr "სლაგი"
+
+#: .\fruitables\shop\models.py:10 .\fruitables\shop\templates\shop.html:79
+msgid "Price"
+msgstr "ფასი"
+
+#: .\fruitables\shop\models.py:11
+msgid "Stock"
+msgstr "მარაგი"
+
+#: .\fruitables\shop\models.py:12
+msgid "Image"
+msgstr "სურათი"
+
+#: .\fruitables\shop\models.py:13
+msgid "Short Description"
+msgstr "მოკლე აღწერა"
+
+#: .\fruitables\shop\models.py:14
+msgid "Description"
+msgstr "აღწერა"
+
+#: .\fruitables\shop\models.py:15
+msgid "rating"
+msgstr "რეიტინგი"
+
+#: .\fruitables\shop\models.py:25
+msgid "Name"
+msgstr "სახელი"
+
+#: .\fruitables\shop\models.py:26
+msgid "Parent"
+msgstr "მშობელი"
+
+#: .\fruitables\shop\templates\index.html:20
+#: .\fruitables\shop\templates\shop.html:33
+#: .\fruitables\templates\base.html:149 .\fruitables\templates\base.html:156
+msgid "Search"
+msgstr "ძიება"
+
+#: .\fruitables\shop\templates\index.html:32
+msgid "Fruits"
+msgstr "ხილი"
+
+#: .\fruitables\shop\templates\index.html:37
+msgid "Vegetables"
+msgstr "ბოსტნეული"
+
+#: .\fruitables\shop\templates\shop-detail.html:10
+#: .\fruitables\shop\templates\shop.html:11
+#: .\fruitables\shop\templates\shop.html:15
+#: .\fruitables\templates\base.html:88
+msgid "Home"
+msgstr "მთავარი"
+
+#: .\fruitables\shop\templates\shop-detail.html:34
+msgid "Category: "
+msgstr "კატეგორია:"
+
+#: .\fruitables\shop\templates\shop.html:8
+#: .\fruitables\shop\templates\shop.html:12
+#: .\fruitables\shop\templates\shop.html:16
+#: .\fruitables\templates\base.html:89
+msgid "Store"
+msgstr "მაღაზია"
+
+#: .\fruitables\shop\templates\shop.html:62
+#: .\fruitables\templates\base.html:92
+msgid "Categories"
+msgstr "კატეგორიები"
+
+#: .\fruitables\shop\templates\shop.html:90
+msgid "Subcategories"
+msgstr "ქვეკატეგორიები"
+
+#: .\fruitables\shop\templates\shop.html:95
+msgid "All"
+msgstr "ყველა"
+
+#: .\fruitables\shop\templates\shop.html:106
+msgid "Filter"
+msgstr "გაფილტრვა"
+
+#: .\fruitables\shop\templates\shop.html:140
+msgid "Kg"
+msgstr "კგ"
+
+#: .\fruitables\shop\templates\shop.html:145
+msgid "Add to cart"
+msgstr "კალათაში დამატება"
+
+#: .\fruitables\templates\base.html:64
+msgid "Sign In"
+msgstr "შესვლა"
+
+#: .\fruitables\templates\base.html:66
+msgid "Sign Up"
+msgstr "რეგისტრაცია"
+
+#: .\fruitables\templates\base.html:68
+msgid "Hi"
+msgstr "გამარჯობა"
+
+#: .\fruitables\templates\base.html:72
+msgid "Log Out"
+msgstr "გამოსვლა"
+
+#: .\fruitables\templates\base.html:100
+msgid "Contact"
+msgstr "კონტაქტი"
+
+#: .\fruitables\user\templates\login.html:6
+msgid "Log in"
+msgstr "შესვლა"
+
+#: .\fruitables\user\templates\login.html:13
+#: .\fruitables\user\templates\register.html:14
+msgid "E-mail"
+msgstr "ელ-ფოსტა"
+
+#: .\fruitables\user\templates\login.html:17
+#: .\fruitables\user\templates\register.html:22
+msgid "Password"
+msgstr "პაროლი"
+
+#: .\fruitables\user\templates\login.html:20
+msgid "Log In"
+msgstr "შესვლა"
+
+#: .\fruitables\user\templates\login.html:21
+msgid "If you are not registered yet,"
+msgstr "თუ ჯერ არ ხართ რეგისტრირებული,"
+
+#: .\fruitables\user\templates\login.html:21
+msgid "Click here."
+msgstr "დააჭირეთ აქ."
+
+#: .\fruitables\user\templates\register.html:7
+#: .\fruitables\user\templates\register.html:34
+msgid "Register"
+msgstr "რეგისტრაცია"
+
+#: .\fruitables\user\templates\register.html:18
+msgid "Username"
+msgstr "მომხმარებელი"
+
+#: .\fruitables\user\templates\register.html:24
+msgid "Must contain minimum 8 symbols"
+msgstr "უნდა შეიცავდეს მინიმუმ 8 სიმბოლოს"
+
+#: .\fruitables\user\templates\register.html:25
+msgid "Must not contain the username"
+msgstr "არ უნდა შეიცავდეს იუზერს"
+
+#: .\fruitables\user\templates\register.html:26
+msgid "Must include digits"
+msgstr "უნდა შეიცავდეს ციფრებს"
+
+#: .\fruitables\user\templates\register.html:31
+msgid "Repeat Password"
+msgstr "გაიმეორეთ პაროლი"

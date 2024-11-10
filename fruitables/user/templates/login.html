@@ -1,24 +1,24 @@
 {% extends 'base.html' %}
-
+{% load i18n %}
 {% block content %}
     <div class="container-fluid py-5" style="margin-top: 150px">
         <div class="container py-5" style="background-color: #e0e0e0; border-radius: 20px">
-            <h1 style="color: #81c408 !important;">ანგარიშში შესვლა</h1>
+            <h1 style="color: #81c408 !important;">{% trans 'Log in' %}</h1>
             <form method="POST" action="{% url 'login' %}" style="padding: 20px 15px">
                 {% csrf_token %}
                 {% for error in form.errors.values %}
                     <p style="color: red">{{ error }}</p>
                 {% endfor %}
                 <div class="form-group">
-                    <p>ელ-ფოსტა: </p>
+                    <p>{% trans 'E-mail' %}: </p>
                     {{ form.username }}
                 </div>
                 <div class="form-group">
-                    <p>პაროლი: </p>
+                    <p>{% trans 'Password' %}: </p>
                     {{ form.password }}
                 </div>
-                <button type="submit" id="filter" class="btn btn-primary" style="margin-top: 1rem">შესვლა</button>
-                <p>თუ ჯერ არ ხარ დარეგისტრირებული, <a href="{% url 'register' %}">დააჭირე აქ.</a></p>
+                <button type="submit" id="filter" class="btn btn-primary" style="margin-top: 1rem">{% trans 'Log In' %}</button>
+                <p>{% trans 'If you are not registered yet,' %} <a href="{% url 'register' %}">{% trans 'Click here.' %}</a></p>
             </form>
 
         </div>

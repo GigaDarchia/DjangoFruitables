@@ -1,19 +1,19 @@
 {% extends 'base.html' %}
 
-{% load static %}
+{% load static i18n %}
 
 {% block content %}
     <!-- Single Page Header start -->
     <div class="container-fluid page-header py-5">
-        <h1 class="text-center text-white display-6">მაღაზია</h1>
+        <h1 class="text-center text-white display-6">{% trans 'Store' %}</h1>
         <ol class="breadcrumb justify-content-center mb-0">
             {% if category %}
-                <li class="breadcrumb-item"><a href="{% url 'home' %}">მთავარი</a></li>
-                <li class="breadcrumb-item"><a href="{% url 'shop' %}">მაღაზია</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'home' %}">{% trans 'Home' %}</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'shop' %}">{% trans 'Store' %}</a></li>
                 <li class="breadcrumb-item active text-white">{{ category.name }}</li>
             {% else %}
-                <li class="breadcrumb-item"><a href="{% url 'home' %}">მთავარი</a></li>
-                <li class="breadcrumb-item active text-white">მაღაზია</li>
+                <li class="breadcrumb-item"><a href="{% url 'home' %}">{% trans 'Home' %}</a></li>
+                <li class="breadcrumb-item active text-white">{% trans 'Store' %}</li>
             {% endif %}
         </ol>
     </div>
@@ -30,7 +30,7 @@
                             <div class="input-group w-100 mx-auto d-flex">
                                 <form action="{% url 'search' %}" method="get">
                                     <div class="input-group">
-                                        <input type="search" class="form-control p-3" placeholder="ძიება"
+                                        <input type="search" class="form-control p-3" placeholder="{% trans 'Search' %}"
                                                aria-describedby="search-icon-1" name="query">
                                         <button type="submit" class="btn p-3" id="search-icon-1"
                                                 style="background: #d1cece">
@@ -59,7 +59,7 @@
                             <div class="row g-4">
                                 <div class="col-lg-12">
                                     <div class="mb-3">
-                                        <h4>კატეგორიები</h4>
+                                        <h4>{% trans 'Categories' %}</h4>
                                         {% for category in categories %}
                                             <ul class="list-unstyled fruite-categorie" style="margin-bottom: 0px">
                                                 <li>
@@ -76,7 +76,7 @@
                                 <form method="GET" action="{% url 'filter_products' %}">
                                     <div class="col-lg-12">
                                         <div class="mb-3">
-                                            <h4 class="mb-2">ფასი</h4>
+                                            <h4 class="mb-2">{% trans 'Price' %}</h4>
                                             <input type="range" class="form-range w-100" id="rangeInput" name="price"
                                                    min="0" max="20" value="{{ selected_price }}"
                                                    oninput="amount.value=rangeInput.value">
@@ -87,12 +87,12 @@
                                     </div>
                                     <div class="col-lg-12">
                                         <div class="mb-3">
-                                            <h4>ქვეკატეგორიები</h4>
+                                            <h4>{% trans 'Subcategories' %}</h4>
                                             <div class="mb-2">
                                                 <input type="radio" class="me-2"
                                                        name="subcategory"
                                                        value="ყველა">
-                                                <label> ყველა </label>
+                                                <label> {% trans 'All' %} </label>
                                             </div>
                                             {% for category in subcategories %}
                                                 <div class="mb-2">
@@ -103,7 +103,7 @@
                                                     <label for="Categories-{{ category.id }}"> {{ category.name }} </label>
                                                 </div>
                                             {% endfor %}
-                                            <button type="submit" id="filter">გაფილტრვა</button>
+                                            <button type="submit" id="filter">{% trans 'Filter' %}</button>
                                         </div>
                                     </div>
                                 </form>
@@ -116,12 +116,14 @@
                                         <div class="rounded position-relative fruite-item">
                                             <div class="fruite-img">
                                                 {% if product.img %}
-                                                    <img src="{{ product.img.crop.500x500 }}"
-                                                         class="img-fluid w-100 rounded-top"
-                                                         alt="">
+                                                    <a href="{% url 'product_page' slug=product.slug %}"><img
+                                                            src="{{ product.img.crop.500x500 }}"
+                                                            class="img-fluid rounded-top"
+                                                            alt=""></a>
                                                 {% else %}
-                                                    <img src="{% static 'img/best-product-1.jpg' %}"
-                                                         class="img-fluid w-100 rounded-top" alt="">
+                                                    <a href="{% url 'product_page' slug=product.slug %}"><img
+                                                            src="{% static 'img/best-product-1.jpg' %}"
+                                                            class="img-fluid w-100 rounded-top" alt=""></a>
                                                 {% endif %}
                                             </div>
                                             <div class="text-white bg-secondary px-3 py-1 rounded position-absolute"
@@ -135,12 +137,13 @@
                                                     {% csrf_token %}
                                                     <div class="d-flex justify-content-between flex-lg-wrap">
                                                         <p class="text-dark fs-5 fw-bold mb-0">₾{{ product.price }} /
-                                                            კგ</p>
+                                                            {% trans 'Kg' %}</p>
                                                         <button type="submit"
-                                                           class="btn border border-secondary rounded-pill px-3 text-primary"><i
-                                                                class="fa fa-shopping-bag me-2 text-primary"></i>
-                                                            კალათაში
-                                                            დამატება</button>
+                                                                class="btn border border-secondary rounded-pill px-3 text-primary">
+                                                            <i
+                                                                    class="fa fa-shopping-bag me-2 text-primary"></i>
+                                                            {% trans 'Add to cart' %}
+                                                        </button>
                                                     </div>
                                                 </form>
                                             </div>

@@ -15,7 +15,6 @@ class CheckoutView(TemplateView):
 class AddToCartView(LoginRequiredMixin, View):
     """Handles adding a product to the user's cart."""
 
-    success_url = reverse_lazy('shop')  # Redirect URL after successfully adding to cart
     login_url = reverse_lazy('login')
 
     def post(self, request, **kwargs):
@@ -40,7 +39,7 @@ class AddToCartView(LoginRequiredMixin, View):
         product.save()
 
         # Redirect to the success URL (e.g., shop page)
-        return redirect(self.success_url)
+        return redirect(request.META.get('HTTP_REFERER'))
 
 
 class CartView(LoginRequiredMixin, ListView):

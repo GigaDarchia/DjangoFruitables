@@ -1,14 +1,17 @@
 from .models import Category, Product
 from .forms import SearchForm
-from django.views.generic import ListView, TemplateView
+from django.views.generic import ListView, TemplateView, DetailView
+
+
 
 class HomeView(TemplateView):
     """Simple view for rendering the home page"""
     template_name = 'index.html'
 
 
-class ProductPageView(TemplateView):
-    """Individual product detail page view"""
+class ProductPageView(DetailView):
+    model = Product
+    context_object_name = 'product'
     template_name = 'shop-detail.html'
 
 

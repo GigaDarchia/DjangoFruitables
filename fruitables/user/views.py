@@ -1,8 +1,7 @@
-from django.contrib.auth import logout, authenticate, login
+from django.contrib.auth import authenticate, login
 from django.contrib.auth.forms import AuthenticationForm
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
-from django.views import View
 from django.contrib.auth.views import LoginView
 from .forms import RegisterForm
 
@@ -10,7 +9,6 @@ class RegisterView(CreateView):
     template_name = 'register.html'
     form_class = RegisterForm
     success_url = reverse_lazy('home')
-
 
     def form_valid(self, form):
         response = super().form_valid(form)
@@ -28,10 +26,6 @@ class RegisterView(CreateView):
 class LogInView(LoginView):
     form_class = AuthenticationForm
     template_name = 'login.html'
-    success_url = reverse_lazy('home')
+    next_page = reverse_lazy('home')
 
-    def get_success_url(self):
-        next_url = self.request.GET.get('next')
-        if next_url:
-            return next_url
-        return self.success_url
+
